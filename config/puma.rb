@@ -9,6 +9,9 @@ if ENV["RAILS_ENV"] == "production"
   workers "#{num_workers}"
   threads 8, 32
 
+  # Bind Puma to the port Render provides, or default to 3000 locally
+  port ENV.fetch("PORT") { 3000 }
+
   # Unless you know what you are changing, do not change them.
   bind "unix://#{APP_ROOT}/tmp/sockets/puma.sock"
   stdout_redirect "#{APP_ROOT}/log/puma.log", "#{APP_ROOT}/log/puma.err.log"
