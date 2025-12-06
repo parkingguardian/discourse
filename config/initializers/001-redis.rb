@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Force Discourse to use the REDIS_URL environment variable
+Discourse.redis = Redis.new(url: ENV["REDIS_URL"])
+
 if Rails.env.development? && ENV["DISCOURSE_FLUSH_REDIS"]
   puts "Flushing redis (development mode)"
   Discourse.redis.flushdb
@@ -11,5 +14,5 @@ begin
     exit 1
   end
 rescue Redis::CannotConnectError
-  STDERR.puts "Couldn't connect to Redis"
+  STDERR.puts "Couldn't connect to Redis at #{ENV["REDIS_URL"]}"
 end
